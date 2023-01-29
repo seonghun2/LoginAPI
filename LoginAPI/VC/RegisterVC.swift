@@ -19,7 +19,8 @@ class RegisterVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        manager.userInfo2
+        //회원가입시 토스트 메세지(성공 or 실패)
+        manager.registerInfo
             .compactMap{ $1.message }
             .subscribe{ msg in
                 self.view.makeToast(msg)
@@ -38,10 +39,5 @@ class RegisterVC: UIViewController {
         }
         
         manager.register(name: "횡성훈", email: emailString, password: passwordString)
-        
-        //회원가입 성공시 토스트메세지+팝네비게이션
-        
-        //실패시 토스트 메세지+그대로
     }
-    
 }

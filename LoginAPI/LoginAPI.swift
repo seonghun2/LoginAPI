@@ -65,21 +65,21 @@ enum LoginAPI {
             
     }
     
-    static func logout(accessToken: String) -> Observable<String> {
+    static func logout(accessToken: String) -> Observable<(StatusCode: Int, LoginInfo)> {
         let request = AuthRouter.logout(acceseToken: accessToken)
         
         return RxAlamofire.requestData(request)
-            .map { (response, data) -> String in
+            .map { (response, data) -> (Int, LoginInfo) in
                 do {
                     let info = try JSONDecoder().decode(LoginInfo.self, from: data)
-                    return info.message ?? ""
+                    return (response.statusCode, info)
                 } catch {
                     throw ApiError.decodingError
                 }
             }
     }
     
-    static func tokenRefresh(refreshToken: String) -> Observable<(StatusCode: Int,LoginInfo)> {
+    static func tokenRefresh(refreshToken: String) -> Observable<(StatusCode: Int, LoginInfo)> {
         let request = AuthRouter.tokenRefresh(refreshToken: refreshToken)
         
         return RxAlamofire.requestData(request)

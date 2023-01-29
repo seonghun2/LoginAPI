@@ -84,8 +84,8 @@
 			children = (
 				CE2EC483298248C2000DDD36 /* VC */,
 				CE6EB6EF297ED32C0032D004 /* LoginAPI.swift */,
-				CE2EC47D29823C52000DDD36 /* AuthRouter.swift */,
 				CE6EB6F2297ED3390032D004 /* LoginViewModel.swift */,
+				CE2EC47D29823C52000DDD36 /* AuthRouter.swift */,
 				CE6EB6F1297ED3390032D004 /* LoginModel.swift */,
 				CE6EB6DE297ED11E0032D004 /* Main.storyboard */,
 				CE6EB6E1297ED11F0032D004 /* Assets.xcassets */,

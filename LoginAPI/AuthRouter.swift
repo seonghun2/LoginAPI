@@ -21,12 +21,10 @@ enum AuthRouter: URLRequestConvertible {
     
     var method: HTTPMethod {
         switch self {
-        
         case .login: return .post
         case .register: return .post
-            
         case .logout: return .post
-        default: return .post
+        case .tokenRefresh: return .post
         }
     }
     

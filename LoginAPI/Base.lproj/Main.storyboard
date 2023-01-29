@@ -60,6 +60,20 @@
                                     <action selector="registerBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cB4-Ws-jLr"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6YV-4j-8i6">
+                                <rect key="frame" x="209" y="475" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="autoLoginSwitchTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="A0q-9S-dBK"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="자동로그인" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WA9-6k-32q">
+                                <rect key="frame" x="126" y="480" width="74" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -73,6 +87,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="452-IZ-a4Q"/>
                     <connections>
+                        <outlet property="autoLoginSwitch" destination="6YV-4j-8i6" id="KWs-LQ-iGu"/>
                         <outlet property="emailTextField" destination="jaV-qt-oLQ" id="MUc-p6-bnF"/>
                         <outlet property="passwordTextField" destination="IaR-BW-2jA" id="uDa-iN-tUR"/>
                     </connections>
@@ -132,7 +147,6 @@
                                 <buttonConfiguration key="configuration" style="plain" title="토큰 갱신"/>
                                 <connections>
                                     <action selector="loginBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bvt-be-5sa"/>
-                                    <action selector="logoutBtnTapped:" destination="3DL-fV-0VP" eventType="touchUpInside" id="qUJ-cQ-HgC"/>
                                     <action selector="refreshTokenBtnTapped:" destination="3DL-fV-0VP" eventType="touchUpInside" id="ypx-1W-gzR"/>
                                 </connections>
                             </button>

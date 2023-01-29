@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var passwordTextField: UITextField!
     
+    @IBOutlet weak var autoLoginSwitch: UISwitch!
+    
     let manager = LoginViewModel.shared
     
     let disposeBag = DisposeBag()
@@ -31,6 +33,8 @@ class ViewController: UIViewController {
         passwordTextField.text = "password1414"
         
         setBinding()
+        
+        autoLoginSwitch.isOn = UserDefaults.standard.bool(forKey: "autoLogin")
     }
     
     func setBinding() {
@@ -58,32 +62,18 @@ class ViewController: UIViewController {
 //                self.userInfo["refreshToken"] = data.token?.refreshToken
 //            }
 //            .disposed(by: disposeBag)
-        manager.userInfo2
-            .map{$0}
-            .subscribe{
-            print("event On")
-        }
-    }
-    
-    @IBAction func loginBtnTapped(_ sender: Any) {
-        guard let emailString = emailTextField.text else {
-            print("이메일을 입력해주세요")
-            return
-        }
-
-        guard let passwordString = passwordTextField.text else {
-            print("비밀번호를 입력해주세요")
-            return
-        }
+//        manager.userInfo2
+//            .map{$0}
+//            .subscribe{
+//            print("event On")
+//        }
         
-        manager.login(email: emailString, password: passwordString)
-        
-        //statusCode가 200이면 화면이동
-        //로그인 할때마다 한번씩 더실행됨
-        manager.userInfo2
+        manager.loginInfo
             .compactMap{$0}
             .subscribe { event in
+                //statusCode가 200이면 화면이동
                 if event.0 == 200 {
+                    
                     print("pushVC")
                     let loginVc = self.storyboard?.instantiateViewController(withIdentifier: "LoginVC") as! LoginVC
                     loginVc.accessToken = event.1.data?.token?.accessToken ?? ""
@@ -91,6 +81,14 @@ class ViewController: UIViewController {
                     loginVc.name = event.1.data?.user?.name ?? ""
                     loginVc.email = event.1.data?.user?.email ?? ""
                     self.navigationController?.pushViewController(loginVc, animated: true)
+                    //자동로그인이 켜져있으면 사용자정보(토큰) 유저디폴트에 저장해두기
+                    
+                    if UserDefaults.standard.bool(forKey: "autoLogin") {
+                        print("자동로그인 on")
+                        
+                        UserDefaults.standard.setValue(event.1.data?.token?.accessToken, forKey: "accessToken")
+                        UserDefaults.standard.setValue(event.1.data?.token?.refreshToken, forKey: "refreshToken")
+                    }
                     
                 } else {
                     print("loginNo")
@@ -100,10 +98,22 @@ class ViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
+    @IBAction func loginBtnTapped(_ sender: Any) {
+        let emailString = emailTextField.text ?? ""
+
+        let passwordString = passwordTextField.text ?? ""
+        
+        manager.login(email: emailString, password: passwordString)
+    }
+    
+    @IBAction func autoLoginSwitchTapped(_ sender: UISwitch) {
+        UserDefaults.standard.set(autoLoginSwitch.isOn, forKey: "autoLogin")
+        print(UserDefaults.standard.bool(forKey: "autoLogin"))
+    }
+    
     @IBAction func registerBtnTapped(_ sender: Any) {
         let registerVc = self.storyboard?.instantiateViewController(withIdentifier: "RegisterVC") as! RegisterVC
         self.navigationController?.pushViewController(registerVc, animated: true)
     }
-
 }
 

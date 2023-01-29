@@ -18,9 +18,17 @@ class LoginViewModel {
     
     //var userInfo: Observable<LoginInfo>?
     //var userInfo2 = PublishSubject<LoginInfo>()
-    var userInfo2 = PublishRelay<(StatusCode: Int, LoginInfo)>()
+    var loginInfo = PublishRelay<(StatusCode: Int, LoginInfo)>()
+    
+    var registerInfo = PublishRelay<(StatusCode: Int, LoginInfo)>()
+    
+    var logoutInfo = PublishRelay<(StatusCode: Int, LoginInfo)>()
+    
+    var tokenRefreshInfo = PublishRelay<(StatusCode: Int, LoginInfo)>()
     
     var message = PublishRelay<String>()
+    
+    var refreshToken = PublishRelay<String>()
     
     let disposeBag = DisposeBag()
     
@@ -35,7 +43,7 @@ class LoginViewModel {
             .debug("LoginVM")
             .subscribe { info in
                 print("lgin")
-                self.userInfo2.accept(info)
+                self.loginInfo.accept(info)
             }
             .disposed(by: disposeBag)
     }
@@ -44,14 +52,21 @@ class LoginViewModel {
         print(#file,#function)
         LoginAPI.register(name: name, email: email, password: password)
             .debug()
-            .bind(to: userInfo2)
+            .bind(to: registerInfo)
             .disposed(by: disposeBag)
     }
     
     func tokenRefresh(refreshToken: String) {
+//        LoginAPI.tokenRefresh(refreshToken: refreshToken)
+//            .debug()
+//            .compactMap { $0.1.data?.token?.refreshToken }
+//            .bind(to: self.refreshToken)
+//            .disposed(by: disposeBag)
+        
         LoginAPI.tokenRefresh(refreshToken: refreshToken)
             .debug()
-            .bind(to: userInfo2)
+            .compactMap { $0 }
+            .bind(to: self.tokenRefreshInfo)
             .disposed(by: disposeBag)
     }
     
@@ -59,7 +74,7 @@ class LoginViewModel {
         LoginAPI.logout(accessToken: accessToken)
             .debug()
             .map{ $0 }
-            .bind(to: message)
+            .bind(to: self.logoutInfo)
             .disposed(by: disposeBag)
     }
 }
